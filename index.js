@@ -139,5 +139,5 @@ module.exports = {
   writeConfig: writeConfig,
   mergeConfig: mergeConfig,
   setupConfig: setupConfig,
-  guldName: guldName
+   guldName: guldName
 }

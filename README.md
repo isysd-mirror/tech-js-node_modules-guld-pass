@@ -45,24 +45,4 @@ const { guldName, getConfig, setConfig, unsetConfig } = require('guld-config')
 
 ##### CLI
 
-```
-  Usage: guld-config [options] [command]
-
-  Options:
-
-    -V, --version             output the version number
-    --global                  Use the global config file
-    --local                   Use the local config file
-    --system                  Use the system config file.
-    -f, --file <config-file>  Use the given config file.
-    -h, --help                output usage information
-
-  Commands:
-
-    name                      Get the guld name of the current user.
-    get <key>                 Get a config by key.
-    set <key> <value>         Set a config key to the given value.
-    unset                     Get the distro, if linux OS.
-    list                      List all config key/value pairs.
-```
-
+See [guld-config-cli](https://github.com/isysd/tech-js-node_modules-guld-config-cli).
