@@ -1,8 +1,7 @@
 {
     "extends": [
         "eslint:recommended",
-        "standard",
-        "plugin:es5/no-es2016"
+        "standard"
     ],
     "plugins": [
         "json"

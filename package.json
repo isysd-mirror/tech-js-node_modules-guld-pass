@@ -1,6 +1,6 @@
 {
   "name": "guld-config",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Guld configuration helper manages git config files.",
   "main": "index.js",
   "scripts": {
