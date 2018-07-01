@@ -1,11 +1,11 @@
-# guld-user
+# guld-pass
 
-Guld user management tools. Get, list, and check users of the guld group.
+Encrypted password management comaptible with Standard Unix Password Store.
 
 ### Install
 
 ```
-npm i guld-user
+npm i guld-pass
 ```
 
 ### Usage
@@ -13,10 +13,10 @@ npm i guld-user
 ##### Node
 
 ```
-const { getName, getFullName, validate, exists } = require('guld-user')
+const { init, show, insert } = require('guld-pass')
 ```
 
 ##### CLI
 
-See [guld-uesr-cli](https://github.com/isysd/tech-js-node_modules-guld-user-cli).
+See [guld-uesr-cli](https://github.com/isysd/tech-js-node_modules-guld-pass-cli).
 

@@ -1,73 +1,55 @@
 const { getJS, setGlobal } = require('guld-env')
 const { getFS } = require('guld-fs')
+const { getName } = require('guld-user')
+const spawn = require('guld-spawn')
 const { getConfig } = require('guld-git-config')
+const { decryptFile, encryptToFile } = require('keyring-gpg')
 const global = require('window-or-global')
-const got = require('got')
 const path = require('path')
 const home = require('user-home')
 var fs
+var guldname
 
-async function getName () {
-  var cfg
-  if (global.GULDNAME && typeof global.GULDNAME !== 'undefined' && global.GULDNAME.length > 0) {
-    return global.GULDNAME
-  } else if (getJS().startsWith('node')) {
-    if (process.env.GULDNAME && typeof process.env.GULDNAME !== 'undefined' && process.env.GULDNAME.length > 0) {
-      return setGlobal('GULDNAME', process.env.GULDNAME)
-    } else {
-      cfg = await getConfig('global')
-      if (cfg && cfg.user && cfg.user.username) return setGlobal('GULDNAME', cfg.user.username)
-      if (process.env.USER) return setGlobal('GULDNAME', process.env.USER)
-    }
-  } else {
-    cfg = await getConfig('global')
-    if (cfg && cfg.user && cfg.user.username) return setGlobal('GULDNAME', cfg.user.username)
-  }
-  return setGlobal('GULDNAME', 'guld')
-}
-
-async function getFullName () {
-  var cfg
-  if (global.GULDFULLNAME && typeof global.GULDFULLNAME !== 'undefined' && global.GULDFULLNAME.length > 0) {
-    return global.GULDFULLNAME
-  } else {
-    cfg = await getConfig('global')
-    if (cfg && cfg.user && cfg.user.name) return setGlobal('GULDFULLNAME', cfg.user.name)
-  }
-}
-
-async function exists (gname) {
-  gname = gname || await getName()
-  validate(gname)
+async function init (gname, keys, p) {
   fs = fs || await getFS()
+  gname = gname || guldname || await getName()
+  p = p || gname
+  if (typeof keys === 'undefined') {
+    cfg = await getConfig('merged', gname)
+    keys = [cfg.user.signingkey]
+  } else if (typeof keys === 'string') keys = [keys]
   try {
-    var stats = await fs.stat(path.join(home, '.blocktree', gname))
-    if (stats && stats.isDirectory()) return true
+    await fs.stats(path.join(home, '.password-store', '.gpg-id'))
   } catch (e) {
-    if (!e.hasOwnProperty('code') || e.code !== 'ENOENT') throw e
-  }
-  try {
-    const resp = await got(`https://raw.githubusercontent.com/isysd/_blocktree/isysd/.gitmodules`)
-    if (resp && resp.body) {
-      return resp.body.indexOf(`[submodule "${gname}"]`) > -1
+    if (keys.length > 0) {
+      console.log(await spawn('pass', '', ['init', ...keys]))
+      console.log(await spawn('pass', '', ['git', 'init']))
     }
-  } catch (e) {
-    return true // TODO parse for specific error and maybe re-throw
+    console.log(await spawn('pass', '', ['init', ...keys, '-p', gname]))
+    console.log(await spawn('pass', '', ['git', 'init', gname]))
   }
-  return true
+  // TODO git fork, submodule and remote setup, then git subdir
 }
 
-function validate (gname) {
-  var re = /^[a-z0-9-]{4,40}$/
-  var result = re.exec(gname)
-  if (!result || result[0].length === 0) {
-    throw new RangeError(`name ${gname} is not valid. Can only be lowercase letters, numbers and dashes (-)`)
-  } else return true
+async function show (p, lineNum) {
+  var pass = await decryptFile(path.join(home, '.password-store', `${p}.gpg`))
+  if (pass) {
+    if (lineNum !== undefined) {
+      pass = pass.split('\n')
+      return pass[lineNum - 1]
+    } else return pass
+  }
+}
+
+async function insert (p, val) {
+  guldname = guldname || await getName()
+  var cfg = await getConfig('merged', guldname)
+  await encryptToFile(val, path.join(home, '.password-store', p), cfg.user.signingkey)
+  // TODO git add commit up
 }
 
 module.exports = {
-  getName: getName,
-  getFullName: getFullName,
-  exists: exists,
-  validate: validate
+  init: init,
+  insert: insert,
+  show: show
 }

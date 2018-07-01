@@ -1,7 +1,7 @@
 {
-  "name": "guld-user",
-  "version": "0.2.1",
-  "description": "Guld user management tools.",
+  "name": "guld-pass",
+  "version": "0.2.3",
+  "description": "Encrypted password management comaptible with Standard Unix Password Store.",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/_mocha",
@@ -19,7 +19,12 @@
   "license": "MIT",
   "dependencies": {
     "guld-env": "^1.0.2",
+    "guld-fs": "^1.0.0",
     "guld-git-config": "^1.0.0",
+    "guld-spawn": "^1.0.0",
+    "guld-user": "^0.2.1",
+    "keyring-gpg": "^0.3.0",
+    "user-home": "^2.0.0",
     "window-or-global": "^1.0.1"
   },
   "devDependencies": {
