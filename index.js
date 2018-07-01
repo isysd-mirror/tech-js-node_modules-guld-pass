@@ -1,6 +1,11 @@
 const { getJS, setGlobal } = require('guld-env')
+const { getFS } = require('guld-fs')
 const { getConfig, setConfig } = require('guld-git-config')
 const global = require('window-or-global')
+const got = require('got')
+const path = require('path')
+const home = require('user-home')
+var fs
 
 async function getName () {
   var cfg
@@ -31,7 +36,38 @@ async function getFullName () {
   }
 }
 
+async function exists (gname) {
+  gname = gname || await getName()
+  validate(gname)
+  fs = fs || await getFS()
+  try {
+    var stats = await fs.stat(path.join(home, '.blocktree', gname))
+    if (stats && stats.isDirectory()) return true
+  } catch (e) {
+    if (!e.hasOwnProperty('code') || e.code !== 'ENOENT') throw e
+  }
+  try {
+    const resp = await got(`https://raw.githubusercontent.com/isysd/_blocktree/isysd/.gitmodules`)
+    if (resp && resp.body) {
+      return resp.body.indexOf(`[submodule "${gname}"]`) > -1
+    }
+  } catch (e) {
+    return true // TODO parse for specific error and maybe re-throw
+  }
+  return true
+}
+
+function validate (gname) {
+  var re = /^[a-z0-9-]{4,40}$/
+  var result = re.exec(gname)
+  if (!result || result[0].length === 0) {
+    throw new RangeError(`name ${gname} is not valid. Can only be lowercase letters, numbers and dashes (-)`)
+  } else return true
+}
+
 module.exports = {
   getName: getName,
-  getFullName: getFullName
+  getFullName: getFullName,
+  exists: exists,
+  validate: validate
 }

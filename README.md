@@ -13,10 +13,10 @@ npm i guld-user
 ##### Node
 
 ```
-const { getName, getFullName } = require('guld-user')
+const { getName, getFullName, validate, exists } = require('guld-user')
 ```
 
 ##### CLI
 
-See [guld-uesr-cli](https://github.com/isysd/tech-js-node_modules-guld-uesr-cli).
+See [guld-uesr-cli](https://github.com/isysd/tech-js-node_modules-guld-user-cli).
 
