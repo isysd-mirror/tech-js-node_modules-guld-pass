@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
 const assert = require('chai').assert
-const { getName, getFullName, exists, validate} = require('./index.js')
-const { getConfig, setConfig, unsetConfig, writeConfig} = require('guld-git-config')
+const { getName, getFullName, exists, validate } = require('./index.js')
+const { getConfig, setConfig, unsetConfig, writeConfig } = require('guld-git-config')
 const global = require('window-or-global')
 const path = require('path')
 const home = require('user-home')
@@ -52,7 +52,7 @@ describe('guld-config', function () {
     it('empty', async function () {
       fullname = await getFullName()
       assert.notExists(fullname)
-      assert.equal(fullname, )
+      assert.equal(fullname)
     })
     it('configured', async function () {
       await setConfig('user.name', 'Test User', 'global')
@@ -91,11 +91,11 @@ describe('guld-config', function () {
       fs.rename(path.join(home, '.blocktree', 'isysd.bak'), path.join(home, '.blocktree', 'isysd'))
     })
     it('empty', async function () {
-      es = await exists()
+      var es = await exists()
       assert.isTrue(es)
     }).timeout(4000)
     it('remote', async function () {
-      es = await exists('isysd')
+      var es = await exists('isysd')
       assert.isTrue(es)
     }).timeout(4000)
     it('does not exists', async function () {

@@ -1,6 +1,6 @@
 const { getJS, setGlobal } = require('guld-env')
 const { getFS } = require('guld-fs')
-const { getConfig, setConfig } = require('guld-git-config')
+const { getConfig } = require('guld-git-config')
 const global = require('window-or-global')
 const got = require('got')
 const path = require('path')
