@@ -1,6 +1,6 @@
 {
   "name": "guld-pass",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Encrypted password management comaptible with Standard Unix Password Store.",
   "main": "index.js",
   "scripts": {
@@ -20,9 +20,9 @@
   "dependencies": {
     "guld-env": "^1.0.2",
     "guld-fs": "^1.0.0",
-    "guld-git-config": "^1.0.0",
+    "guld-git-config": "^1.1.2",
     "guld-spawn": "^1.0.0",
-    "guld-user": "^0.2.1",
+    "guld-user": "^0.3.2",
     "keyring-gpg": "^0.3.0",
     "user-home": "^2.0.0",
     "window-or-global": "^1.0.1"

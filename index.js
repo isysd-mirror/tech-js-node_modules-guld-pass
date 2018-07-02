@@ -1,10 +1,8 @@
-const { getJS, setGlobal } = require('guld-env')
 const { getFS } = require('guld-fs')
 const { getName } = require('guld-user')
 const spawn = require('guld-spawn')
 const { getConfig } = require('guld-git-config')
 const { decryptFile, encryptToFile } = require('keyring-gpg')
-const global = require('window-or-global')
 const path = require('path')
 const home = require('user-home')
 var fs
@@ -15,18 +13,18 @@ async function init (gname, keys, p) {
   gname = gname || guldname || await getName()
   p = p || gname
   if (typeof keys === 'undefined') {
-    cfg = await getConfig('merged', gname)
+    var cfg = await getConfig('merged', gname)
     keys = [cfg.user.signingkey]
   } else if (typeof keys === 'string') keys = [keys]
   try {
     await fs.stats(path.join(home, '.password-store', '.gpg-id'))
   } catch (e) {
     if (keys.length > 0) {
-      console.log(await spawn('pass', '', ['init', ...keys]))
-      console.log(await spawn('pass', '', ['git', 'init']))
+      await spawn('pass', '', ['init', ...keys])
+      await spawn('pass', '', ['git', 'init'])
     }
-    console.log(await spawn('pass', '', ['init', ...keys, '-p', gname]))
-    console.log(await spawn('pass', '', ['git', 'init', gname]))
+    await spawn('pass', '', ['init', ...keys, '-p', gname])
+    await spawn('pass', '', ['git', 'init', gname])
   }
   // TODO git fork, submodule and remote setup, then git subdir
 }
@@ -48,8 +46,46 @@ async function insert (p, val) {
   // TODO git add commit up
 }
 
+function parsePass (raw) {
+  var a
+  var arr = raw.split('\n')
+  var pass = {'password': arr.shift()}
+  while (arr.length > 0) {
+    a = arr.shift()
+    if (a.startsWith('login')) pass['login'] = a.replace('login: ', '').trim()
+    else if (a.startsWith('url')) pass['url'] = a.replace('url: ', '').trim()
+    else {
+      var kv = a.split(':')
+      var key = kv[0].trim()
+      pass[key] = pass[key] || ''
+      pass[key] = `${pass[key]}\n${a.replace(`${key}: `, '').trim()}`.trim()
+    }
+  }
+  return pass
+}
+
+function stringifyPass (pass) {
+  var str = ``
+  if (typeof pass === 'string') return pass
+  else if (pass.password) str = `${pass.password}\n`
+  for (var key in pass) {
+    if (key === undefined || key === 'password') continue
+    var val = pass[key] || ''
+    str = `${str}${key}: ${val}\n`
+  }
+  return str.trim()
+}
+
+async function merge (p, val) {
+  var orig = await show(p)
+  return insert(p, stringifyPass(Object.assign(orig, val)))
+}
+
 module.exports = {
   init: init,
   insert: insert,
-  show: show
+  show: show,
+  merge: merge,
+  parsePass: parsePass,
+  stringifyPass: stringifyPass
 }

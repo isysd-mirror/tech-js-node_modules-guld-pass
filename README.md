@@ -13,10 +13,9 @@ npm i guld-pass
 ##### Node
 
 ```
-const { init, show, insert } = require('guld-pass')
+const { init, merge, show, insert, parsePass, stringifyPass } = require('guld-pass')
 ```
 
 ##### CLI
 
-See [guld-uesr-cli](https://github.com/isysd/tech-js-node_modules-guld-pass-cli).
-
+See [guld-user-cli](https://github.com/isysd/tech-js-node_modules-guld-pass-cli).
