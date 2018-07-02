@@ -23,7 +23,7 @@
     "guld-git-config": "^1.1.2",
     "guld-spawn": "^1.0.0",
     "guld-user": "^0.3.2",
-    "keyring-gpg": "^0.3.0",
+    "keyring-gpg": "^0.3.1",
     "user-home": "^2.0.0",
     "window-or-global": "^1.0.1"
   },

@@ -58,7 +58,8 @@ function parsePass (raw) {
       var kv = a.split(':')
       var key = kv[0].trim()
       pass[key] = pass[key] || ''
-      pass[key] = `${pass[key]}\n${a.replace(`${key}: `, '').trim()}`.trim()
+      var val = a.replace(`${key}: `, '').trim()
+      pass[key] = `${pass[key]}\n${val}`.trim()
     }
   }
   return pass
