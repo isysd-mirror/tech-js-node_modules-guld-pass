@@ -40,22 +40,29 @@ async function show (p, lineNum) {
 }
 
 async function insert (p, val) {
+  if (!p.endsWith('.gpg')) p = `${p}.gpg`
   guldname = guldname || await getName()
   var cfg = await getConfig('merged', guldname)
-  await encryptToFile(val, path.join(home, '.password-store', p), cfg.user.signingkey)
+  return encryptToFile(val, path.join(home, '.password-store', p), cfg.user.signingkey)
   // TODO git add commit up
 }
 
 function parsePass (raw) {
   var a
   var arr = raw.split('\n')
+  if (!Array.isArray(arr)) arr = [arr]
   var pass = {'password': arr.shift()}
   while (arr.length > 0) {
     a = arr.shift()
     if (a.startsWith('login')) pass['login'] = a.replace('login: ', '').trim()
-    else if (a.startsWith('url')) pass['url'] = a.replace('url: ', '').trim()
+    else if (a.startsWith('user')) {
+      if (!pass.hasOwnProperty('login')) pass['login'] = a.replace('user: ', '').trim()
+    } else if (a.startsWith('url')) pass['url'] = a.replace('url: ', '').trim()
     else {
-      var kv = a.split(':')
+      var kv
+      if (a.indexOf(':') > -1) {
+        kv = a.split(':')
+      } else kv = [a]
       var key = kv[0].trim()
       pass[key] = pass[key] || ''
       var val = a.replace(`${key}: `, '').trim()
@@ -70,7 +77,7 @@ function stringifyPass (pass) {
   if (typeof pass === 'string') return pass
   else if (pass.password) str = `${pass.password}\n`
   for (var key in pass) {
-    if (key === undefined || key === 'password') continue
+    if (key === undefined || key === 'password' || key.length === 0) continue
     var val = pass[key] || ''
     str = `${str}${key}: ${val}\n`
   }
@@ -78,8 +85,9 @@ function stringifyPass (pass) {
 }
 
 async function merge (p, val) {
-  var orig = await show(p)
-  return insert(p, stringifyPass(Object.assign(orig, val)))
+  var orig = parsePass(await show(p))
+  var merged = Object.assign(orig, val)
+  return insert(p, stringifyPass(merged))
 }
 
 module.exports = {
