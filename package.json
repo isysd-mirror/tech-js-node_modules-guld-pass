@@ -4,7 +4,6 @@
   "description": "Encrypted password management comaptible with Standard Unix Password Store.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/_mocha",
     "lint": "eslint --env browser *.js*",
     "fix": "eslint --fix *.js*"
   },
@@ -41,8 +40,7 @@
     "pre-commit": "^1.2.2"
   },
   "pre-commit": [
-    "lint",
-    "test"
+    "lint"
   ],
   "readme": "README.md",
   "engines": {
