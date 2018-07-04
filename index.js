@@ -84,6 +84,11 @@ function stringifyPass (pass) {
   return str.trim()
 }
 
+async function getPass (p) {
+  var pass = await show(p)
+  if (pass) return parsePass(pass)
+}
+
 async function merge (p, val) {
   var orig = parsePass(await show(p))
   var merged = Object.assign(orig, val)
@@ -96,5 +101,6 @@ module.exports = {
   show: show,
   merge: merge,
   parsePass: parsePass,
+  getPass: getPass,
   stringifyPass: stringifyPass
 }
