@@ -17,10 +17,10 @@
   "author": "isysd",
   "license": "MIT",
   "dependencies": {
-    "guld-fs": "^1.2.7",
-    "guld-git-config": "^1.2.4",
-    "guld-spawn": "^1.0.2",
-    "guld-user": "^0.5.4",
+    "guld-fs": "^1.2.8",
+    "guld-git-config": "^1.2.5",
+    "guld-spawn": "^1.0.3",
+    "guld-user": "^0.5.5",
     "keyring-gpg": "^0.3.2",
     "user-home": "^2.0.0"
   },
