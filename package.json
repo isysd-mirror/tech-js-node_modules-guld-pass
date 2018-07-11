@@ -18,9 +18,9 @@
   "license": "MIT",
   "dependencies": {
     "guld-fs": "^1.2.5",
-    "guld-git-config": "^1.2.1",
-    "guld-spawn": "^1.0.0",
-    "guld-user": "^0.5.1",
+    "guld-git-config": "^1.2.2",
+    "guld-spawn": "^1.0.1",
+    "guld-user": "^0.5.2",
     "keyring-gpg": "^0.3.1",
     "user-home": "^2.0.0"
   },
