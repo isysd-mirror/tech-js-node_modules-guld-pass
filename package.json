@@ -1,6 +1,6 @@
 {
   "name": "guld-pass",
-  "version": "0.5.10",
+  "version": "0.5.11",
   "description": "Encrypted password management comaptible with Standard Unix Password Store.",
   "main": "index.js",
   "scripts": {
