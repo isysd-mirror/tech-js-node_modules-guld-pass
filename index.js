@@ -1,10 +1,11 @@
 const { getFS } = require('guld-fs')
 const { getName } = require('guld-user')
-const spawn = require('guld-spawn')
+const { getSpawn } = require('guld-spawn')
 const { getConfig } = require('guld-git-config')
 const { decryptFile, encryptToFile } = require('keyring-gpg')
 const path = require('path')
 const home = require('user-home')
+const spawn = getSpawn()
 var fs
 var guldname
 
