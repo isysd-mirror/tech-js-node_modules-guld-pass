@@ -43,6 +43,6 @@
   "engines": {
     "node": ">=7"
   },
-  "homepage": "https://github.com/isysd/tech-js-node_modules-guld-pass#readme",
-  "repository": "git@github.com:isysd/tech-js-node_modules-guld-pass.git"
+  "homepage": "https://bitbucket.org/isysd/tech-js-node_modules-guld-pass#readme",
+  "repository": "git@bitbucket.org:isysd/tech-js-node_modules-guld-pass.git"
 }
